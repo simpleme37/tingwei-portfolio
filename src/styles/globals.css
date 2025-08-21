@@ -2,25 +2,76 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #303030;
 }
 
 @theme inline {
+  --font-display: "Amatic SC", Arial, Helvetica, sans-serif;
+  --font-sans: "Noto Sans TC", sans-serif;
+  
+    /* 字級 */
+  --text-hero: clamp(2.5rem, 8vw, 6rem);      /* 40px → 96px */
+  --text-h1:   clamp(2rem,   5vw, 3.5rem);    /* 32px → 56px */
+  --text-h2:   clamp(1.75rem,3.5vw,2.5rem);   /* 28px → 40px */
+  --text-h3:   1.5rem;                        /* 24px */
+  --text-h4:   1.25rem;                       /* 20px */
+  --text-body-lg: 1.125rem;                   /* 18px */
+  --text-body:    1rem;                       /* 16px */
+  --text-body-sm: 0.875rem;                   /* 14px */
+  --text-caption: 0.75rem;                    /* 12px */
+  
+    /* 行高 */
+  --leading-title:   1.15;
+  --leading-paragraph: 1.5;
+
+  
+  /* 字距 */
+  --tracking-hero: 0.02em;
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.02em;
+  
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #303030;
     --foreground: #ededed;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base{
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 300;
+    line-height: var(--leading-paragraph);
+  }
 }
+
+@layer utilities {
+  @keyframes wobbleChar {
+    0%, 100% { transform: rotate(0deg) translateY(0); }
+    15%      { transform: rotate(-0.6deg) translateY(-1px); }
+    30%      { transform: rotate(0.4deg)  translateY(1px); }
+    50%      { transform: rotate(-0.3deg) translateY(0); }
+    70%      { transform: rotate(0.5deg)  translateY(-1px); }
+    85%      { transform: rotate(-0.2deg) translateY(1px); }
+  }
+  .wobble-letter {
+    display: inline-block;              /* 各字才能 transform */
+    transform-origin: 50% 60%;
+    animation-name: wobbleChar;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .wobble-letter { animation: none !important; }
+  }
+}
+
+
