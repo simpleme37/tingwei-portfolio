@@ -7,10 +7,12 @@ import Image from "next/image";
 
 import LabEmbed from "@/components/LabEmbed";
 import ModelViewer from "@/components/ModelViewer";
-import { GRAPHICS } from "@/data/graphics";
+import WobblyText from "@/components/WobblyText";
+import ImageModal from "@/components/ImageModal";
+
+import { GraphicItem, GRAPHICS } from "@/data/graphics";
 import { ANIMATION_2D } from "@/data/animations2d";
 import { ANIMATION_WEB } from "@/data/animationsWeb";
-import WobblyText from "@/components/WobblyText";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
@@ -36,9 +38,12 @@ const SECTIONS: Section[] = [
   },
 ];
 
+const HERO_IDS = new Set(["top", "about"]); // 需要滿版的區塊
+
 export default function Home() {
   const [open, setOpen] = useState(false); // 側邊欄開關
   const [activeId, setActiveId] = useState<string>("top"); // active 中的區塊
+  const [imgIdx, setImgIdx] = useState<number | null>(null);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -123,7 +128,9 @@ export default function Home() {
               <span
                 className={clsx(
                   "font-display relative cursor-pointer text-3xl transition-colors hover:text-cyan-300",
-                  activeId === s.id ? "current-section" : ""
+                  activeId === s.id
+                    ? "underline decoration-1 decoration-wavy underline-offset-3"
+                    : ""
                 )}
               >
                 {s.nav}
@@ -137,21 +144,21 @@ export default function Home() {
           <Link
             href="https://resume-xi-tan.vercel.app/"
             target="_blank"
-            className="block cursor-pointer border p-2 text-center font-display text-h3 hover:bg-white/20"
+            className="block cursor-pointer border p-2 text-center font-display text-h3 hover:bg-cyan-500/20"
           >
             Resume
           </Link>
           <Link
             href="https://github.com/simpleme37"
             target="_blank"
-            className="block cursor-pointer border p-2 text-center font-display text-h3 hover:bg-white/20"
+            className="block cursor-pointer border p-2 text-center font-display text-h3 hover:bg-cyan-500/20"
           >
             Github
           </Link>
           <Link
             href="https://drive.google.com/file/d/1p7aNVVioSAmS3NrakX9Y2WHFCCZHdtYg/view?usp=drive_link"
             target="_blank"
-            className="block cursor-pointer border p-2 text-center font-display text-h3 hover:bg-white/20"
+            className="block cursor-pointer border p-2 text-center font-display text-h3 hover:bg-cyan-500/20"
           >
             Motion Portfolio
           </Link>
@@ -170,144 +177,198 @@ export default function Home() {
       {/* 主要內容（桌機預留側欄寬度） */}
       <main className="min-h-screen">
         <div className="relative w-full pl-0 md:pl-[270px]">
-          {SECTIONS.map((s) => (
-            <section
-              key={s.id}
-              id={s.id}
-              ref={(el) => {
-                sectionRefs.current[s.id] = el;
-              }} // 這裡用大括號，不回傳值
-              className={clsx(
-                "flex h-screen w-full flex-col items-center justify-center border-b border-gray-500 font-display text-center",
-                s.dark ? "bg-foreground text-white" : ""
-              )}
-            >
-              {s.id === "top" ? (
-                <WobblyText
-                  text={s.title}
-                  active={activeId === "top"} // 只有 top 在視窗時才 loop
-                  duration={3.6}
-                  delayStep={0.08}
-                  className="mb-12 text-hero leading-tight font-display will-change-transform"
-                />
-              ) : (
-                <h2 className="mb-12 text-hero leading-tight font-display">
-                  {s.title}
-                </h2>
-              )}
+          {SECTIONS.map((s) => {
+            const isHero = HERO_IDS.has(s.id);
 
-              {/* 區塊:about */}
-              {s.id === "about" && (
-                <div className="mx-auto w-full max-w-[720px]">
-                  <p className="font-sans">
-                    具平面與動態設計背景，完成資策會前端課程的進修後，目前投入開發工作。
-                    <br />
-                    主要使用 React／Next.js 與
-                    HTML、CSS（Bootstrap、Tailwind）、JavaScript 完成介面實作。
-                    Three.js、Redux、TypeScript 目前為入門與練習中技能。
-                    <br />
-                    <br />
-                    這個簡單的一頁式作品集網站整理了我在不同階段的作品與練習：包含網頁互動、基礎
-                    3D 模型展示
-                    與平面設計，多為功能或視覺的片段，以及舊專案的部分成果。
-                  </p>
-                </div>
-              )}
-
-              {/* 區塊:frontend lab */}
-              {s.id === "frontend_lab" && (
-                <div className="mx-auto w-full max-w-[1000px] px-4 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
-                  <LabEmbed
-                    title="react weather demo"
-                    src="https://react-weather-demo.vercel.app/"
-                    caption="使用 react 練習串接 openweather API"
+            return (
+              <section
+                key={s.id}
+                id={s.id}
+                ref={(el) => {
+                  sectionRefs.current[s.id] = el;
+                }} // 這裡用大括號，不回傳值
+                className={clsx(
+                  "w-full text-center",
+                  s.dark && "bg-foreground text-white",
+                  // top = 滿版置中；其他 = 至少 1 視窗高
+                  isHero
+                    ? "min-h-[100svh] flex flex-col items-center justify-center"
+                    : "min-h-[100svh] py-20 flex flex-col justify-center"
+                )}
+              >
+                {s.id === "top" ? (
+                  <WobblyText
+                    text={s.title}
+                    active={activeId === "top"} // 只有 top 在視窗時才 loop
+                    duration={3.6}
+                    delayStep={0.08}
+                    className="mb-12 text-hero leading-tight font-display will-change-transform"
                   />
-                  <LabEmbed
-                    title="react weather demo"
-                    src="https://react-weather-demo.vercel.app/"
-                    caption="使用 react 練習串接 openweather API"
-                  />
-                </div>
-              )}
+                ) : (
+                  <h2 className="mb-12 text-hero leading-tight font-display">
+                    {s.title}
+                  </h2>
+                )}
 
-              {/* 區塊：web animation */}
-              {s.id === "web_animation" && (
-                <div className="mx-auto w-full max-w-[1000px] px-4 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                  {ANIMATION_WEB.map((v) => (
-                    <div key={v.id} className="relative aspect-[9/16]">
-                      <ReactPlayer
-                        src={`https://www.youtube.com/watch?v=${v.id}`}
-                        width="100%"
-                        height="100%"
-                        controls
-                        playsInline
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* 區塊：2d animation */}
-              {s.id === "2d_animation" && (
-                <div className="mx-auto grid w-[min(92%,1100px)] grid-cols-1 gap-6 md:grid-cols-2">
-                  {ANIMATION_2D.map((v) => (
-                    <div key={v.id} className="aspect-video">
-                      <ReactPlayer
-                        src={`https://youtu.be/${v.id}`}
-                        width="100%"
-                        height="100%"
-                        controls
-                        playsInline
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* 區塊：3d model */}
-              {s.id === "3d_model" && (
-                <div className="mx-auto w-full max-w-[1000px]">
-                  {/* 16:9 比例盒；需要直式就改成 aspect-[9/16] */}
-                  <div
-                    className="relative w-full"
-                    style={{ aspectRatio: "16 / 9" }}
-                  >
-                    <div className="absolute inset-0">
-                      <ModelViewer />
-                    </div>
+                {/* 區塊:about */}
+                {s.id === "about" && (
+                  <div className="mx-auto w-full max-w-[720px]">
+                    <p className="font-sans">
+                      具平面與動態設計背景，完成資策會前端課程的進修後，目前投入開發工作。
+                      <br />
+                      主要使用 React / Next.js 與
+                      HTML、CSS（Bootstrap、Tailwind）、JavaScript
+                      完成介面實作。 Three.js、Redux、TypeScript
+                      目前為入門與練習中技能。
+                      <br />
+                      <br />
+                      這個簡單的一頁式作品集網站整理了我在不同階段的作品與練習：包含網頁互動、基礎
+                      3D 模型展示
+                      與平面設計，多為功能或視覺的片段，以及舊專案的部分成果。
+                    </p>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* 區塊：graphic design */}
-              {s.id === "graphic_design" && (
-                <div className="mx-auto w-full max-w-[1000px]">
-                  <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
-                    {GRAPHICS.map((item, i) => (
-                      <div
-                        key={i}
-                        className="relative mb-4 break-inside-avoid w-full aspect-[1/1]"
-                      >
-                        <Image
-                          src={item.src}
-                          alt={item.alt}
-                          fill
-                          sizes="(max-width:768px) 50vw, (max-width:1024px) 33vw, 25vw"
-                          className="object-cover shadow-md"
+                {/* 區塊:frontend lab */}
+                {s.id === "frontend_lab" && (
+                  <div className="mx-auto w-full max-w-[1000px] px-4 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+                    <LabEmbed
+                      title="react weather demo"
+                      src="https://react-weather-demo.vercel.app/"
+                      caption="使用 react 練習串接 openweather API"
+                    />
+                    <LabEmbed
+                      title="react weather demo"
+                      src="https://react-weather-demo.vercel.app/"
+                      caption="使用 react 練習串接 openweather API"
+                    />
+                  </div>
+                )}
+
+                {/* 區塊：web animation */}
+                {s.id === "web_animation" && (
+                  <div className="mx-auto w-full max-w-[1000px] px-4 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                    {ANIMATION_WEB.map((v) => (
+                      <div key={v.id} className="relative aspect-[9/16]">
+                        <ReactPlayer
+                          src={`https://www.youtube.com/watch?v=${v.id}`}
+                          width="100%"
+                          height="100%"
+                          controls
+                          playsInline
                         />
                       </div>
                     ))}
                   </div>
-                </div>
-              )}
-            </section>
-          ))}
+                )}
+
+                {/* 區塊：2d animation */}
+                {s.id === "2d_animation" && (
+                  <div className="mx-auto grid w-[min(92%,1100px)] grid-cols-1 gap-6 md:grid-cols-2">
+                    {ANIMATION_2D.map((v) => (
+                      <div key={v.id} className="aspect-video">
+                        <ReactPlayer
+                          src={`https://youtu.be/${v.id}`}
+                          width="100%"
+                          height="100%"
+                          controls
+                          playsInline
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* 區塊：3d model */}
+                {s.id === "3d_model" && (
+                  <figure className="mx-auto w-full max-w-[1000px]">
+                    {/* 16:9 比例盒；需要直式就改成 aspect-[9/16] */}
+                    <div
+                      className="relative w-full"
+                      style={{ aspectRatio: "16 / 9" }}
+                    >
+                      <div className="absolute inset-0">
+                        <ModelViewer active={activeId === "3d_model"} />
+                      </div>
+                    </div>
+                    <figcaption className="mt-2 font-sans text-body text-black/70 dark:text-white/70">
+                      3D model by Ting Wei; illustration by{" "}
+                      <Link
+                        href="https://www.behance.net/gallery/175691913/2023"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:text-cyan-500"
+                      >
+                        @Yeh
+                      </Link>
+                      . Used with permission.
+                    </figcaption>
+                  </figure>
+                )}
+
+                {/* 區塊：graphic design（Grid + span；不裁切，保持比例） */}
+                {s.id === "graphic_design" && (
+                  <div className="mx-auto w-full max-w-[1000px]">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 [grid-auto-flow:dense] auto-rows-[8px]">
+                      {GRAPHICS.map((item, i) => (
+                        <figure
+                          key={item.src}
+                          className={clsx(
+                            // 橫向
+                            item.col === 3
+                              ? "col-span-2 md:col-span-3"
+                              : item.col === 2
+                              ? "col-span-2 md:col-span-2"
+                              : "col-span-2 md:col-span-1",
+                            // 縱向
+                            item.row === 3
+                              ? "row-span-[42]" // 42*8px ≈ 336px
+                              : item.row === 2
+                              ? "row-span-[28]" // 28*8px ≈ 224px
+                              : "row-span-[14]", // 14*8px ≈ 112px
+                            "relative overflow-hidden rounded-xl shadow bg-neutral-900/5 bg-white"
+                          )}
+                        >
+                          {/* 內層全覆蓋的盒子，讓 Image 能用 fill + contain 撐到容器最大邊 */}
+                          <div
+                            className="absolute inset-0 flex items-center justify-center p-2 cursor-zoom-in"
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => setImgIdx(i)}
+                            onKeyDown={(e) => e.key === "Enter" && setImgIdx(i)}
+                          >
+                            <Image
+                              src={item.src}
+                              alt={item.alt}
+                              fill
+                              className="object-cover cursor-pointer"
+                            />
+                          </div>
+                        </figure>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </section>
+            );
+          })}
 
           <footer className="flex items-center justify-center p-14 font-display text-h2">
             © {new Date().getFullYear()} Ting Wei Lee
           </footer>
         </div>
       </main>
+
+      <ImageModal
+        open={imgIdx !== null}
+        index={imgIdx}
+        items={GRAPHICS} // 資料陣列
+        onClose={() => setImgIdx(null)}
+        onPrev={() => setImgIdx((v) => (v !== null && v > 0 ? v - 1 : v))}
+        onNext={() =>
+          setImgIdx((v) => (v !== null && v < GRAPHICS.length - 1 ? v + 1 : v))
+        }
+      />
     </>
   );
 }

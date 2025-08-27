@@ -63,7 +63,7 @@
     85%      { transform: rotate(-0.2deg) translateY(1px); }
   }
   .wobble-letter {
-    display: inline-block;              /* 各字才能 transform */
+    display: inline-block;
     transform-origin: 50% 60%;
     animation-name: wobbleChar;
     animation-timing-function: ease-in-out;
