@@ -10,7 +10,7 @@ import ModelViewer from "@/components/ModelViewer";
 import WobblyText from "@/components/WobblyText";
 import ImageModal from "@/components/ImageModal";
 
-import { GraphicItem, GRAPHICS } from "@/data/graphics";
+import { GRAPHICS } from "@/data/graphics";
 import { ANIMATION_2D } from "@/data/animations2d";
 import { ANIMATION_WEB } from "@/data/animationsWeb";
 

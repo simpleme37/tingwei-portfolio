@@ -1,4 +1,5 @@
 // components/ModelViewer.tsx
+import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   OrbitControls,
@@ -36,7 +37,7 @@ function Model({
   // 2) 抓到用來顯示圖片的平面 ( 只找一次、避免每次 render 遍歷整棵樹 )
   const placeholder = useMemo(() => {
     const n = scene.getObjectByName("Placeholder");
-    return n && (n as any).isMesh ? (n as THREE.Mesh) : null;
+    return n instanceof THREE.Mesh ? n : null;
   }, [scene]);
 
   // 3) UV / 材質初始化（只做一次）
@@ -154,7 +155,7 @@ useGLTF.preload("/models/PictureFrameModal.gltf");
 function CameraDolly({
   controlsRef,
   play, // 外部控制是否播放
-  onEnd, // 播完通知父層
+  onEnd,
   from = {
     pos: new THREE.Vector3(8, 2.4, 10),
     target: new THREE.Vector3(0, 0.2, 0),
@@ -166,9 +167,9 @@ function CameraDolly({
   duration = 1200, // 動畫時間
   delay = 100, // 開始前延遲
 }: {
-  controlsRef: React.RefObject<any>;
+  controlsRef: React.RefObject<OrbitControlsImpl | null>;
   play: boolean;
-  onEnd?: () => void;
+  onEnd: () => void;
   from?: { pos: THREE.Vector3; target: THREE.Vector3 };
   to?: { pos: THREE.Vector3; target: THREE.Vector3 };
   duration?: number;
@@ -177,11 +178,15 @@ function CameraDolly({
   const { camera } = useThree();
   const startTime = useRef<number | null>(null);
   const [animating, setAnimating] = useState(true);
+  const endedRef = useRef(false);
   const ease = (t: number) => 1 - Math.pow(1 - t, 3);
 
   // 當 play 為 true 時，初始化起點並開始
   useEffect(() => {
     if (!play) return;
+    endedRef.current = false;
+    setAnimating(true);
+    startTime.current = null;
 
     // 放在遠一點的起點
     camera.position.copy(from.pos);
@@ -211,6 +216,10 @@ function CameraDolly({
 
     if (k >= 1) {
       setAnimating(false);
+      if (!endedRef.current) {
+        endedRef.current = true;
+        onEnd();
+      }
     }
   });
 
@@ -225,7 +234,7 @@ export default function ModelViewer({
   once?: boolean; // 只播一次
 }) {
   // OrbitControls 需要 ref 才能在動畫中更新 target / enabled
-  const controlsRef = useRef<any>(null);
+  const controlsRef = useRef<OrbitControlsImpl | null>(null);
   const [played, setPlayed] = useState(false);
   const shouldPlay = active && (!once || !played);
 
