@@ -1,26 +1,116 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: "Laila", Arial, Helvetica, sans-serif;
+  --font-sans: "Noto Sans TC", sans-serif;
+
+  /* 字級 */
+  --text-80: 5rem;
+  --text-56: 3.5rem;
+  --text-48: 3rem;
+  --text-40: 2.5rem;
+  --text-32: 2rem;
+  --text-28: 1.75rem;
+  --text-24: 1.5rem;
+  --text-18: 1.125rem;
+  --text-16: 1rem;
+  --text-14: 0.875rem;
+  --text-12: 0.75rem;
+
+  /* 字重 */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* 行高 */
+  --leading-1: 1;
+  --leading-1.2: 1.2;
+  --leading-1.6: 1.6;
+
+  /* 字距 */
+  --tracking-hero: 0.02em;
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.02em;
+
+  /* 顏色 */
+  --color-green-200: #aee6db;
+  --color-green-300: #86d9c9;
+  --color-green-500: #36c0a5;
+  --color-purple-500: #dec7fe;
+  --color-white: #ffffff;
+  --color-gray-200: #f6f6f6;
+  --color-gray-300: #d3d3d3;
+  --color-gray-500: #919191;
+  --color-gray-900: #353535;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer utilities {
+  .text-hero {
+    font-size: var(--text-48);
+    font-weight: 700;
+  }
+  @media screen and (min-width: 1024px) {
+    .text-hero {
+      font-size: var(--text-80);
+    }
+  }
+
+  .text-h1 {
+    font-size: var(--text-32);
+    font-weight: 700;
+  }
+  @media screen and (min-width: 1024px) {
+    .text-h1 {
+      font-size: var(--text-56);
+    }
+  }
+
+  .text-h2 {
+  }
+  @media screen and (min-width: 1024px) {
+    .text-h2 {
+      font-size: var(--text-40);
+    }
+  }
+
+  .text-h3 {
+  }
+  @media screen and (min-width: 1024px) {
+    .text-h3 {
+      font-size: var(--text-28);
+      font-weight: var(--weight-medium);
+    }
+  }
+
+  .text-h4 {
+  }
+  .text-h5 {
+  }
+  .text-h6 {
+  }
+
+  .text-body {
+  }
+  @media screen and (min-width: 1024px) {
+    .text-body {
+      font-size: var(--text-18);
+      font-weight: var(--weight-regular);
+    }
+  }
+
+  .text-tiny {
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  body {
+    background: var(--color-gray-200);
+    color: var(--color-gray-900);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--leading-paragraph);
+    font-weight: 400;
+  }
 }
