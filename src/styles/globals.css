@@ -12,6 +12,7 @@
   --text-32: 2rem;
   --text-28: 1.75rem;
   --text-24: 1.5rem;
+  --text-20: 1.25rem;
   --text-18: 1.125rem;
   --text-16: 1rem;
   --text-14: 0.875rem;
@@ -50,6 +51,7 @@
   .text-hero {
     font-size: var(--text-48);
     font-weight: 700;
+    line-height: var(--leading-1.2);
   }
   @media screen and (min-width: 1024px) {
     .text-hero {
@@ -67,8 +69,6 @@
     }
   }
 
-  .text-h2 {
-  }
   @media screen and (min-width: 1024px) {
     .text-h2 {
       font-size: var(--text-40);
@@ -76,31 +76,48 @@
   }
 
   .text-h3 {
+    font-size: var(--text-20);
+    font-weight: var(--weight-medium);
   }
   @media screen and (min-width: 1024px) {
     .text-h3 {
       font-size: var(--text-28);
-      font-weight: var(--weight-medium);
     }
   }
 
   .text-h4 {
-  }
-  .text-h5 {
-  }
-  .text-h6 {
+    font-size: var(--text-24);
+    font-weight: var(--weight-medium);
   }
 
-  .text-body {
+  .text-body-lg {
+    font-size: var(--text-16);
+    font-weight: var(--weight-regular);
   }
   @media screen and (min-width: 1024px) {
-    .text-body {
+    .text-body-lg {
       font-size: var(--text-18);
-      font-weight: var(--weight-regular);
     }
   }
 
+  .text-body {
+    font-size: var(--text-14);
+    font-weight: var(--weight-regular);
+  }
+  @media screen and (min-width: 1024px) {
+    .text-body {
+      font-size: var(--text-16);
+    }
+  }
+
+  .text-body-sm {
+    font-size: var(--text-14);
+    font-weight: var(--weight-regular);
+  }
+
   .text-tiny {
+    font-size: var(--text-12);
+    font-weight: var(--weight-regular);
   }
 }
 

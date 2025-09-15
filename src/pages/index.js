@@ -1,22 +1,35 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import Github from "../../public/icon/Github";
-import Smile from "../../public/icon/Smile";
-import ModelViewer from "@/components/ModelViewer";
 
+import NavBar from "@/components/NavBar";
+import ModelViewer from "@/components/ModelViewer";
+import ProjectCard from "@/components/ProjectCard";
+
+import { PROJECTS } from "@/data/project";
 import { ANIMATION_2D } from "@/data/animations2d";
 import { ANIMATION_WEB } from "@/data/animationsWeb";
+import { VISUAL_ROWS } from "@/data/visuals";
+
+import Github from "@/assets/icons/Github";
+import Smile from "@/assets/icons/Smile";
+import Video from "@/assets/icons/Video";
+import Flower from "@/assets/icons/Flower";
+import heroMain from "@/assets/images/decos/hero-main.png";
+import skillsMain from "@/assets/images/decos/skills-main.svg";
+import flowersGreen from "@/assets/images/decos/flowers-green.svg";
+import flowersPurple from "@/assets/images/decos/flowers-purple.svg";
+import badge3D from "@/assets/images/works/3d-badge.png";
+import frame3D from "@/assets/images/works/3d-frame.png";
+import logo01 from "@/assets/images/works/logo-01.png";
+import logo02 from "@/assets/images/works/logo-02.png";
+import logo03 from "@/assets/images/works/logo-03.png";
+import socialMix from "@/assets/images/works/social-mix.png";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 export default function Home() {
-  const [open, setOpen] = useState(false);
-
-  const toggleMenu = () => setOpen((v) => !v);
-  const closeMenu = () => setOpen(false);
   return (
     <>
       <Head>
@@ -25,27 +38,34 @@ export default function Home() {
         <meta name="description" content="Ting Wei's portfolio site" />
       </Head>
 
-      <div className="px-5 lg:px-0">
-        <div className="max-w-[1200px] mx-auto">
-          {/* Hero */}
-          <section className="min-h-screen flex flex-col items-center justify-center">
+      <div className="px-5 pt-[70px] lg:pt-0 lg:px-0">
+        <div className="max-w-[1100px] mx-auto relative">
+          {/* navbar */}
+          <NavBar />
+
+          {/* Top */}
+          <section
+            id="top"
+            className="min-h-screen flex flex-col items-center justify-center scroll-mt-24"
+          >
             {/* 內層：置中 + 控制最大寬度 */}
-            <div className="mx-auto w-full max-w-[1100px] flex flex-col lg:flex-row items-center justify-between gap-6">
+            <div className="mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-20">
               {/* 文字欄：手機在下、桌機在左 */}
-              <div className="order-2 lg:order-1 flex flex-col justify-between lg:h-[520px]">
+              <div className="order-2 lg:order-1 flex flex-col w-full lg:flex-1 lg:h-[520px] justify-between">
                 <p className="font-display text-hero text-gray-900">
                   Wei’s <br />
                   Portfolio
                 </p>
                 <p className="font-display text-hero text-gray-900 flex items-center justify-between">
                   <span>2025</span>
+                  <Flower className="w-12 h-12 text-green-500 hover:text-purple-500 transition-colors" />
                 </p>
               </div>
 
               {/* 圖片欄：手機在上、桌機在右 */}
-              <div className="order-1 lg:order-2 border border-gray-300 rounded-[20px] overflow-hidden">
+              <div className="order-1 lg:order-2 w-full lg:w-[520px] border border-gray-300 rounded-[20px] overflow-hidden">
                 <Image
-                  src="/images/img_hero_main.png"
+                  src={heroMain}
                   alt="Hero main"
                   width={520}
                   height={520}
@@ -64,8 +84,11 @@ export default function Home() {
           </section>
 
           {/* About */}
-          <section className="min-h-screen flex items-center">
-            <div className="mx-auto w-full max-w-[1100px]">
+          <section
+            id="about"
+            className="min-h-screen flex items-center scroll-mt-24"
+          >
+            <div className="mx-auto w-full">
               <h2 className="w-full font-display text-h1">About</h2>
               <div className="flex flex-col gap-4">
                 <p className="w-full">
@@ -87,11 +110,12 @@ export default function Home() {
                 <div className="w-full flex flex-col gap-4">
                   <p>👇 以下附上我的 網頁版履歷、GitHub 與動態作品集：</p>
 
-                  <div className="flex gap-2">
+                  <div className="flex flex-col md:flex-row gap-2">
                     <Link
                       href="https://resume-xi-tan.vercel.app"
                       passHref
                       legacyBehavior
+                      className="flex w-100"
                     >
                       <a className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2">
                         <Smile />
@@ -120,7 +144,7 @@ export default function Home() {
                       legacyBehavior
                     >
                       <a className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2">
-                        <Github />
+                        <Video />
                         Motion Portfolio
                       </a>
                     </Link>
@@ -131,98 +155,43 @@ export default function Home() {
           </section>
 
           {/* Skills */}
-          <section className="min-h-screen flex items-center">
-            <div className="mx-auto w-full max-w-[1100px] flex flex-col gap-8">
+          <section
+            id="tools_and_skills"
+            className="min-h-screen flex items-center"
+          >
+            <div className="mx-auto w-full flex flex-col gap-8">
               <h2 className="w-full font-display text-h1 text-center">
                 Tools & Skills
               </h2>
               <div className="flex flex-col w-fit gap-8 items-center mx-auto text-h3 font-display">
-                <Image
-                  src="/images/skills.svg"
-                  alt=""
-                  width={820}
-                  height={96}
-                />
-                {/* <div className="inline-flex bg-green-500 text-white px-6 py-1 gap-9 origin-left -rotate-3">
-                  <span>//</span>
-                  <span>HTML</span>
-                  <span>CSS</span>
-                  <span>JavaScript</span>
-                </div>
-                <div className="inline-flex bg-green-500 text-white px-6 py-1 gap-9 origin-left rotate-2">
-                  <span>//</span>
-                  <span>React</span>
-                  <span>Next.js</span>
-                  <span>Tailwind CSS</span>
-                  <span>Bootstrap</span>
-                </div>
-                <div className="inline-flex bg-purple-500 text-white px-6 py-1 gap-9">
-                  <span>//</span>
-                  <span>Node.js</span>
-                  <span>Express</span>
-                  <span>MySQL</span>
-                  <span>Git / GitHub</span>
-                </div>
-                <div className="inline-flex bg-gray-300 text-green-500 px-6 py-1 gap-9">
-                  <span>//</span>
-                  <span>Figma</span>
-                  <span>Photoshop</span>
-                  <span>After Effect</span>
-                  <span>Blender</span>
-                </div> */}
+                <Image src={skillsMain} alt="" width={820} height={96} />
               </div>
             </div>
           </section>
 
           {/* Frontend Lab */}
-          <section className="min-h-screen flex items-center">
-            <div className="mx-auto w-full max-w-[1100px] flex flex-col gap-8">
+          <section
+            id="frontend_lab"
+            className="min-h-screen py-[60px] md:py-[120px] flex items-center scroll-mt-24"
+          >
+            <div className="mx-auto w-full flex flex-col gap-8">
               <h2 className="w-full font-display text-h1">Frontend Lab</h2>
-              <div className="relative flex flex-col md:flex-row items-start gap-4">
-                {/* 16:9、最大 576px，手機會等比縮小 */}
-                <div className="w-full max-w-[576px] aspect-[16/9] rounded-[12px] overflow-hidden border border-gray-300 shrink-0">
-                  <iframe
-                    src="https://www.synerter.com/"
-                    className="w-full h-full"
-                    loading="lazy"
-                    allowFullScreen
-                    // width/height 屬性可省略
-                  />
-                </div>
-
-                <div className="md:flex-1 space-y-2">
-                  <Link
-                    href={"https://www.synerter.com/"}
-                    className="text-h3 font-semibold"
-                  >
-                    Synerter Official Website
-                  </Link>
-                  <p className="text-body mt-4 mb-2">
-                    參與公司官網的前端開發，主要負責首頁、影片專區、註冊登入、關於我們、隱私政策等頁面。開發過程中著重元件化設計，以提升維護性與一致性。同時製作後台管理系統，讓行政人員可以直接更新網站內容，而不需重新部署。此專案讓我累積了商用網站的開發經驗，並體驗到前台與後台協作的完整流程。
-                  </p>
-                  <p className="text-gray-500">
-                    #React #Vite #SQL #資料庫規劃 #RWD
-                  </p>
-                </div>
-
-                <Image
-                  src="/images/flowe_3_green.svg"
-                  alt=""
-                  width={240}
-                  height={96}
-                  // className="h-full w-full object-cover"
-                  className="absolute bottom-0 right-0"
-                />
-              </div>
+              {/* 網站卡片 */}
+              {PROJECTS.map((item) => {
+                return <ProjectCard key={item.href} {...item} />;
+              })}
             </div>
           </section>
 
           {/* Animation */}
-          <section className="min-h-screen flex items-center">
-            <div className="mx-auto w-full max-w-[1100px] flex flex-col gap-8">
+          <section
+            id="animation"
+            className="min-h-screen py-[60px] md:py-[120px] flex items-center scroll-mt-24"
+          >
+            <div className="mx-auto w-full flex flex-col gap-8">
               <h2 className="w-full font-display text-h1">Animation</h2>
               {/* APP 動畫 */}
-              <div className="px-6 md:px-0 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {ANIMATION_WEB.map((v) => (
                   <div key={v.id} className="aspect-[16/9] md:aspect-[9/16]">
                     <ReactPlayer
@@ -235,8 +204,21 @@ export default function Home() {
                   </div>
                 ))}
               </div>
+              {/* 分隔線 */}
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 items-center sm:justify-between">
+                <span className="flex flex-row gap-2">
+                  <Flower className="w-12 h-12 text-green-500/50 transition-colors" />
+                  <Flower className="w-12 h-12 text-green-500/75 transition-colors" />
+                  <Flower className="w-12 h-12 text-green-500 transition-colors" />
+                </span>
+                <span className="flex flex-row gap-2">
+                  <Flower className="w-12 h-12 text-purple-500/50 transition-colors" />
+                  <Flower className="w-12 h-12 text-purple-500/75 transition-colors" />
+                  <Flower className="w-12 h-12 text-purple-500 transition-colors" />
+                </span>
+              </div>
               {/* 2D 動畫 */}
-              <div className="px-6 md:px-0 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {ANIMATION_2D.map((v) => (
                   <div key={v.id} className="aspect-video">
                     <ReactPlayer
@@ -253,8 +235,11 @@ export default function Home() {
           </section>
 
           {/* 3D Model */}
-          <section className="min-h-screen flex items-center">
-            <div className="mx-auto w-full max-w-[1100px] flex flex-col gap-8">
+          <section
+            id="model3d"
+            className="min-h-screen py-[60px] md:py-[120px] flex items-center scroll-mt-24"
+          >
+            <div className="mx-auto w-full flex flex-col gap-8">
               <h2 className="w-full font-display text-h1">3D Model</h2>
               <div
                 className="relative w-full bg-white border-1 border-gray-300"
@@ -268,21 +253,24 @@ export default function Home() {
           </section>
 
           {/* Visual Works */}
-          <section className="min-h-screen flex items-center">
-            <div className="mx-auto w-full max-w-[1100px] flex flex-col gap-8">
+          <section
+            id="visuals"
+            className="min-h-screen py-[60px] md:py-[120px] flex items-center scroll-mt-24"
+          >
+            <div className="mx-auto w-full flex flex-col gap-8">
               <h2 className="w-full font-display text-h1">Visual Works</h2>
               <div className="flex flex-col gap-4">
                 {/* Row 1 */}
                 <div className="flex flex-col lg:flex-row gap-4">
                   <Image
-                    src="/images/img_logo_01.png"
+                    src={logo01}
                     alt=""
                     className="w-full h-full object-cover"
                     width={782}
                     height={500}
                   />
                   <Image
-                    src="/images/img_logo_02.png"
+                    src={logo02}
                     alt=""
                     className="w-full h-full object-cover"
                     width={510}
@@ -292,14 +280,14 @@ export default function Home() {
                 {/* Row 2 */}
                 <div className="flex flex-col lg:flex-row gap-4">
                   <Image
-                    src="/images/img_3d_badge.png"
+                    src={badge3D}
                     alt=""
                     className="w-full h-full object-cover"
                     width={510}
                     height={500}
                   />
                   <Image
-                    src="/images/img_3d_frame.png"
+                    src={frame3D}
                     alt=""
                     className="w-full h-full object-cover"
                     width={782}
@@ -309,14 +297,14 @@ export default function Home() {
                 {/* Row 3 */}
                 <div className="flex flex-col lg:flex-row gap-4">
                   <Image
-                    src="/images/img_graphic_01.png"
+                    src={socialMix}
                     alt=""
                     className="w-full h-full object-cover"
                     width={782}
                     height={500}
                   />
                   <Image
-                    src="/images/img_logo_03.png"
+                    src={logo03}
                     alt=""
                     className="w-full h-full object-cover"
                     width={510}
@@ -328,9 +316,12 @@ export default function Home() {
           </section>
 
           {/* Thanks */}
-          <section className="min-h-screen flex flex-col items-center justify-center">
+          <section
+            id="thanks"
+            className="min-h-screen flex flex-col items-center justify-center"
+          >
             {/* 內層：置中 + 控制最大寬度 */}
-            <div className="mx-auto w-full max-w-[1100px] flex flex-col items-center justify-between gap-6">
+            <div className="mx-auto w-full flex flex-col items-center justify-between gap-6">
               <p className="font-display text-hero">Thanks :)</p>
               <span>© 2025 Ting Wei Lee</span>
             </div>
