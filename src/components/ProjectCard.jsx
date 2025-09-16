@@ -27,7 +27,7 @@ export default function ProjectCard({
       <div className="w-full md:w-5/9">
         <Link
           href={href}
-          className="flex flex-row gap-1 items-end text-h3 font-semibold underline hover:text-green-500"
+          className="flex flex-row gap-1 items-end text-h4 font-semibold underline hover:text-green-500"
         >
           {title}
           <Mouse />

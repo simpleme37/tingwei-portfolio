@@ -1,8 +1,10 @@
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 
+import Loading from "@/components/Loading";
 import NavBar from "@/components/NavBar";
 import ModelViewer from "@/components/ModelViewer";
 import ProjectCard from "@/components/ProjectCard";
@@ -10,7 +12,6 @@ import ProjectCard from "@/components/ProjectCard";
 import { PROJECTS } from "@/data/project";
 import { ANIMATION_2D } from "@/data/animations2d";
 import { ANIMATION_WEB } from "@/data/animationsWeb";
-import { VISUAL_ROWS } from "@/data/visuals";
 
 import Github from "@/assets/icons/Github";
 import Smile from "@/assets/icons/Smile";
@@ -30,6 +31,15 @@ import socialMix from "@/assets/images/works/social-mix.png";
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 export default function Home() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <>
       <Head>
@@ -38,296 +48,399 @@ export default function Home() {
         <meta name="description" content="Ting Wei's portfolio site" />
       </Head>
 
-      <div className="px-5 pt-[70px] lg:pt-0 lg:px-0">
-        <div className="max-w-[1100px] mx-auto relative">
-          {/* navbar */}
-          <NavBar />
+      <Loading show={loading} />
 
-          {/* Top */}
-          <section
-            id="top"
-            className="min-h-screen flex flex-col items-center justify-center scroll-mt-24"
-          >
-            {/* 內層：置中 + 控制最大寬度 */}
-            <div className="mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-20">
-              {/* 文字欄：手機在下、桌機在左 */}
-              <div className="order-2 lg:order-1 flex flex-col w-full lg:flex-1 lg:h-[520px] justify-between">
-                <p className="font-display text-hero text-gray-900">
-                  Wei’s <br />
-                  Portfolio
-                </p>
-                <p className="font-display text-hero text-gray-900 flex items-center justify-between">
-                  <span>2025</span>
-                  <Flower className="w-12 h-12 text-green-500 hover:text-purple-500 transition-colors" />
-                </p>
-              </div>
+      <NavBar />
 
-              {/* 圖片欄：手機在上、桌機在右 */}
-              <div className="order-1 lg:order-2 w-full lg:w-[520px] border border-gray-300 rounded-[20px] overflow-hidden">
-                <Image
-                  src={heroMain}
-                  alt="Hero main"
-                  width={520}
-                  height={520}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            </div>
-
-            {/* Scroll 按鈕：正常元素，用 gap 或 margin 拉開 */}
-            <button
-              type="button"
-              className="bg-white text-gray-500 mt-18 inline-flex items-center rounded-full border border-gray-300 px-4 py-2 text-sm"
+      <main>
+        {/* 手機版邊距 */}
+        <div className="px-5 pt-[70px] lg:pt-0 lg:px-0">
+          {/* 外容器：最大寬度 1100 px */}
+          <div className="max-w-[1100px] mx-auto relative">
+            {/* Top */}
+            <section
+              id="top"
+              className="min-h-screen flex flex-col items-center justify-center scroll-mt-24"
             >
-              scroll
-            </button>
-          </section>
+              {/* 內層：置中 + 控制最大寬度 */}
+              <div className="mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-20">
+                {/* 文字欄：手機在下、桌機在左 */}
+                <div className="order-2 lg:order-1 flex flex-col w-full lg:flex-1 lg:h-[520px] justify-between">
+                  <h1 className="font-display text-h1 text-gray-900">
+                    Wei’s <br />
+                    Portfolio
+                  </h1>
+                  <p className="font-display text-h1 text-gray-900 flex items-center justify-between">
+                    <span>2025</span>
+                    <Flower className="w-12 h-12 text-green-500 hover:text-purple-500 transition-colors" />
+                  </p>
+                </div>
 
-          {/* About */}
-          <section
-            id="about"
-            className="min-h-screen flex items-center scroll-mt-24"
-          >
-            <div className="mx-auto w-full">
-              <h2 className="w-full font-display text-h1">About</h2>
-              <div className="flex flex-col gap-4">
-                <p className="w-full">
-                  大學主修設計，初期從事平面與動態設計，之後完成資策會前端課程，並投入開發工作。
-                </p>
-                <p className="w-full">
-                  以 HTML、CSS（Bootstrap、Tailwind CSS） 與 JavaScript
-                  為基礎，並搭配 React / Next.js
-                  等框架進行介面開發。另外，也能使用 Figma
-                  進行基礎版型規劃、元件設計。目前持續練習
-                  Redux、Three.js、TypeScript，希望逐步拓展技能範圍。
-                </p>
-                <p className="w-full">
-                  這個基礎作品集網站整理了我的一些作品與練習：包含網頁互動、基礎
-                  3D
-                  模型展示與小動畫，涵蓋小功能或視覺片段的嘗試，也收錄了部分舊專案成果。
-                </p>
-
-                <div className="w-full flex flex-col gap-4">
-                  <p>👇 以下附上我的 網頁版履歷、GitHub 與動態作品集：</p>
-
-                  <div className="flex flex-col md:flex-row gap-2">
-                    <Link
-                      href="https://resume-xi-tan.vercel.app"
-                      passHref
-                      legacyBehavior
-                      className="flex w-100"
-                    >
-                      <a className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2">
-                        <Smile />
-                        Resume
-                      </a>
-                    </Link>
-
-                    <Link
-                      href="https://github.com/simpleme37"
-                      passHref
-                      legacyBehavior
-                    >
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2"
-                      >
-                        <Github />
-                        GitHub
-                      </a>
-                    </Link>
-
-                    <Link
-                      href="https://drive.google.com/file/d/1p7aNVVioSAmS3NrakX9Y2WHFCCZHdtYg/view?usp=drive_link"
-                      passHref
-                      legacyBehavior
-                    >
-                      <a className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2">
-                        <Video />
-                        Motion Portfolio
-                      </a>
-                    </Link>
-                  </div>
+                {/* 圖片欄：手機在上、桌機在右 */}
+                <div className="order-1 lg:order-2 w-full lg:w-[520px] border border-gray-300 rounded-[20px] overflow-hidden">
+                  <Image
+                    src={heroMain}
+                    alt="Hero main"
+                    width={520}
+                    height={520}
+                    className="h-full w-full object-cover"
+                  />
                 </div>
               </div>
-            </div>
-          </section>
 
-          {/* Skills */}
-          <section
-            id="tools_and_skills"
-            className="min-h-screen flex items-center"
-          >
-            <div className="mx-auto w-full flex flex-col gap-8">
-              <h2 className="w-full font-display text-h1 text-center">
-                Tools & Skills
-              </h2>
-              <div className="flex flex-col w-fit gap-8 items-center mx-auto text-h3 font-display">
-                <Image src={skillsMain} alt="" width={820} height={96} />
-              </div>
-            </div>
-          </section>
-
-          {/* Frontend Lab */}
-          <section
-            id="frontend_lab"
-            className="min-h-screen py-[60px] md:py-[120px] flex items-center scroll-mt-24"
-          >
-            <div className="mx-auto w-full flex flex-col gap-8">
-              <h2 className="w-full font-display text-h1">Frontend Lab</h2>
-              {/* 網站卡片 */}
-              {PROJECTS.map((item) => {
-                return <ProjectCard key={item.href} {...item} />;
-              })}
-            </div>
-          </section>
-
-          {/* Animation */}
-          <section
-            id="animation"
-            className="min-h-screen py-[60px] md:py-[120px] flex items-center scroll-mt-24"
-          >
-            <div className="mx-auto w-full flex flex-col gap-8">
-              <h2 className="w-full font-display text-h1">Animation</h2>
-              {/* APP 動畫 */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {ANIMATION_WEB.map((v) => (
-                  <div key={v.id} className="aspect-[16/9] md:aspect-[9/16]">
-                    <ReactPlayer
-                      src={`https://www.youtube.com/watch?v=${v.id}`}
-                      width="100%"
-                      height="100%"
-                      controls
-                      playsInline
-                    />
-                  </div>
-                ))}
-              </div>
-              {/* 分隔線 */}
-              <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 items-center sm:justify-between">
-                <span className="flex flex-row gap-2">
-                  <Flower className="w-12 h-12 text-green-500/50 transition-colors" />
-                  <Flower className="w-12 h-12 text-green-500/75 transition-colors" />
-                  <Flower className="w-12 h-12 text-green-500 transition-colors" />
-                </span>
-                <span className="flex flex-row gap-2">
-                  <Flower className="w-12 h-12 text-purple-500/50 transition-colors" />
-                  <Flower className="w-12 h-12 text-purple-500/75 transition-colors" />
-                  <Flower className="w-12 h-12 text-purple-500 transition-colors" />
-                </span>
-              </div>
-              {/* 2D 動畫 */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {ANIMATION_2D.map((v) => (
-                  <div key={v.id} className="aspect-video">
-                    <ReactPlayer
-                      src={`https://youtu.be/${v.id}`}
-                      width="100%"
-                      height="100%"
-                      controls
-                      playsInline
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* 3D Model */}
-          <section
-            id="model3d"
-            className="min-h-screen py-[60px] md:py-[120px] flex items-center scroll-mt-24"
-          >
-            <div className="mx-auto w-full flex flex-col gap-8">
-              <h2 className="w-full font-display text-h1">3D Model</h2>
-              <div
-                className="relative w-full bg-white border-1 border-gray-300"
-                style={{ aspectRatio: "16 / 9" }}
+              {/* Scroll 按鈕：正常元素，用 gap 或 margin 拉開 */}
+              <button
+                type="button"
+                className="bg-white text-gray-500 mt-18 inline-flex items-center rounded-full border border-gray-300 px-4 py-2 text-body"
               >
-                <div className="absolute inset-0">
-                  <ModelViewer />
+                scroll
+              </button>
+            </section>
+
+            {/* About */}
+            <section
+              id="about"
+              className="min-h-screen flex items-center scroll-mt-24"
+            >
+              <div className="mx-auto w-full">
+                <h2 className="w-full font-display text-h2">About</h2>
+                <div className="flex flex-col gap-4">
+                  <p className="w-full">
+                    大學主修設計，初期從事平面與動態設計，之後完成資策會前端課程，並投入開發工作。
+                  </p>
+                  <p className="w-full">
+                    以 HTML、CSS（Bootstrap、Tailwind CSS） 與 JavaScript
+                    為基礎，並搭配 React / Next.js
+                    等框架進行介面開發。另外，也能使用 Figma
+                    進行基礎版型規劃、元件設計。目前持續練習
+                    Redux、Three.js、TypeScript，希望逐步拓展技能範圍。
+                  </p>
+                  <p className="w-full">
+                    這個基礎作品集網站整理了我的一些作品與練習：包含網頁互動、基礎
+                    3D
+                    模型展示與小動畫，涵蓋小功能或視覺片段的嘗試，也收錄了部分舊專案成果。
+                  </p>
+
+                  <div className="w-full flex flex-col gap-4">
+                    <p>👇 以下附上我的 網頁版履歷、GitHub 與動態作品集：</p>
+
+                    <div className="flex flex-col md:flex-row gap-2">
+                      <Link
+                        href="https://resume-xi-tan.vercel.app"
+                        passHref
+                        legacyBehavior
+                        className="flex w-100"
+                      >
+                        <a className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2">
+                          <Smile />
+                          Resume
+                        </a>
+                      </Link>
+
+                      <Link
+                        href="https://github.com/simpleme37"
+                        passHref
+                        legacyBehavior
+                      >
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2"
+                        >
+                          <Github />
+                          GitHub
+                        </a>
+                      </Link>
+
+                      <Link
+                        href="https://drive.google.com/file/d/1p7aNVVioSAmS3NrakX9Y2WHFCCZHdtYg/view?usp=drive_link"
+                        passHref
+                        legacyBehavior
+                      >
+                        <a className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2">
+                          <Video />
+                          Motion Portfolio
+                        </a>
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
 
-          {/* Visual Works */}
-          <section
-            id="visuals"
-            className="min-h-screen py-[60px] md:py-[120px] flex items-center scroll-mt-24"
-          >
-            <div className="mx-auto w-full flex flex-col gap-8">
-              <h2 className="w-full font-display text-h1">Visual Works</h2>
-              <div className="flex flex-col gap-4">
-                {/* Row 1 */}
-                <div className="flex flex-col lg:flex-row gap-4">
-                  <Image
-                    src={logo01}
-                    alt=""
-                    className="w-full h-full object-cover"
-                    width={782}
-                    height={500}
-                  />
-                  <Image
-                    src={logo02}
-                    alt=""
-                    className="w-full h-full object-cover"
-                    width={510}
-                    height={500}
-                  />
-                </div>
-                {/* Row 2 */}
-                <div className="flex flex-col lg:flex-row gap-4">
-                  <Image
-                    src={badge3D}
-                    alt=""
-                    className="w-full h-full object-cover"
-                    width={510}
-                    height={500}
-                  />
-                  <Image
-                    src={frame3D}
-                    alt=""
-                    className="w-full h-full object-cover"
-                    width={782}
-                    height={500}
-                  />
-                </div>
-                {/* Row 3 */}
-                <div className="flex flex-col lg:flex-row gap-4">
-                  <Image
-                    src={socialMix}
-                    alt=""
-                    className="w-full h-full object-cover"
-                    width={782}
-                    height={500}
-                  />
-                  <Image
-                    src={logo03}
-                    alt=""
-                    className="w-full h-full object-cover"
-                    width={510}
-                    height={500}
-                  />
+            {/* Skills */}
+            <section
+              id="tools_and_skills"
+              className="min-h-screen flex items-center"
+            >
+              <div className="mx-auto w-full flex flex-col gap-8">
+                <h2 className="w-full font-display text-h2 text-center">
+                  Tools & Skills
+                </h2>
+                <div className="flex flex-col w-fit gap-8 items-center mx-auto text-h4 font-display">
+                  <Image src={skillsMain} alt="" width={820} height={96} />
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
 
-          {/* Thanks */}
-          <section
-            id="thanks"
-            className="min-h-screen flex flex-col items-center justify-center"
-          >
-            {/* 內層：置中 + 控制最大寬度 */}
-            <div className="mx-auto w-full flex flex-col items-center justify-between gap-6">
-              <p className="font-display text-hero">Thanks :)</p>
-              <span>© 2025 Ting Wei Lee</span>
-            </div>
-          </section>
+            {/* Frontend Lab */}
+            <section
+              id="frontend_lab"
+              className="min-h-screen py-[60px] md:py-[120px] flex items-center scroll-mt-24"
+            >
+              <div className="mx-auto w-full flex flex-col gap-8">
+                <h2 className="w-full font-display text-h2">Frontend Lab</h2>
+                {/* 網站卡片 */}
+                {PROJECTS.map((item) => {
+                  return <ProjectCard key={item.href} {...item} />;
+                })}
+              </div>
+            </section>
+
+            {/* Animation */}
+            <section
+              id="animation"
+              className="min-h-screen py-[60px] md:py-[120px] flex items-center scroll-mt-24"
+            >
+              <div className="mx-auto w-full flex flex-col gap-8">
+                <h2 className="w-full font-display text-h2">Animation</h2>
+                {/* 說明文字 */}
+                <div className="w-full">
+                  <p className="text-h4 font-semibold">網頁 / APP 動畫</p>
+                  <p className="text-body-lg mt-4">
+                    使用 After Effects + Lottie JSON 製作，包含 APP Logo
+                    的開場動態，以及應用內的互動動畫。
+                  </p>
+                </div>
+                {/* APP 動畫 */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {ANIMATION_WEB.map((v) => (
+                    <div key={v.id} className="aspect-[16/9] md:aspect-[9/16]">
+                      <ReactPlayer
+                        src={`https://www.youtube.com/watch?v=${v.id}`}
+                        width="100%"
+                        height="100%"
+                        controls
+                        playsInline
+                      />
+                    </div>
+                  ))}
+                </div>
+                {/* 說明文字 */}
+                <div className="w-full">
+                  <p className="text-h4 font-semibold">開場動畫</p>
+                  <p className="text-body-lg mt-4">
+                    使用 After Effects 製作 2D Motion Graphic
+                    開場動畫，用於小遊戲啟動時的呈現。
+                  </p>
+                </div>
+                {/* 2D 動畫 */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {ANIMATION_2D.map((v) => (
+                    <div key={v.id} className="aspect-video">
+                      <ReactPlayer
+                        src={`https://youtu.be/${v.id}`}
+                        width="100%"
+                        height="100%"
+                        controls
+                        playsInline
+                      />
+                    </div>
+                  ))}
+                </div>
+                {/* 分隔線 */}
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 items-center sm:justify-between">
+                  <span className="flex flex-row gap-2">
+                    <Flower className="w-12 h-12 text-green-500/50 transition-colors" />
+                    <Flower className="w-12 h-12 text-green-500/75 transition-colors" />
+                    <Flower className="w-12 h-12 text-green-500 transition-colors" />
+                  </span>
+                  <span className="flex flex-row gap-2">
+                    <Flower className="w-12 h-12 text-purple-500/50 transition-colors" />
+                    <Flower className="w-12 h-12 text-purple-500/75 transition-colors" />
+                    <Flower className="w-12 h-12 text-purple-500 transition-colors" />
+                  </span>
+                </div>
+              </div>
+            </section>
+
+            {/* 3D Model */}
+            <section
+              id="model3d"
+              className="min-h-screen py-[60px] md:py-[120px] flex flex-col items-center scroll-mt-24"
+            >
+              <div className="mx-auto w-full flex flex-col gap-8">
+                <h2 className="w-full font-display text-h2">3D Model</h2>
+                <div
+                  className="relative w-full bg-white border-1 border-gray-300"
+                  style={{ aspectRatio: "16 / 9" }}
+                >
+                  <div className="absolute inset-0">
+                    <ModelViewer />
+                  </div>
+                </div>
+              </div>
+              {/* 說明文字 */}
+              <div className="w-full mt-4">
+                <p className="text-h4 font-semibold">NFT 相框模型</p>
+                <p className="text-body-lg mt-4 mb-2">
+                  這是一個以 Blender
+                  製作的小型相框模型，用來展示圖片，框內貼圖會動態更換。我將模型輸出為網頁格式，並透過
+                  Three.js 進行基礎的展示。
+                </p>
+                <p className="text-gray-500">
+                  3D model by Ting Wei; illustration (cat artwork) by @Yeh. Used
+                  with permission.
+                </p>
+              </div>
+            </section>
+
+            {/* Visual Works */}
+            <section
+              id="visuals"
+              className="min-h-screen py-[60px] md:py-[120px] flex items-center scroll-mt-24"
+            >
+              <div className="mx-auto w-full flex flex-col gap-8">
+                <h2 className="w-full font-display text-h2">Visual Works</h2>
+                {/* 說明文字 */}
+                <div className="w-full">
+                  <p className="text-h4 font-semibold mb-2">
+                    Logo設計、社群圖設計、3D模型的渲染圖
+                  </p>
+                  <p className="text-gray-500">
+                    #Illustrator、Blender、Photoshop、Figma
+                  </p>
+                </div>
+                <div className="flex flex-col gap-4">
+                  {/* Row 1 */}
+                  <div className="flex flex-col lg:flex-row gap-4">
+                    {/* 左圖 */}
+                    <div className="group border border-gray-300 relative w-full lg:basis-[60%] aspect-[782/363] overflow-hidden">
+                      <div className="w-full h-full overflow-hidden">
+                        <Image
+                          src={logo01}
+                          alt="Logo 01"
+                          fill
+                          className="object-cover [inset:-1px]"
+                        />
+                        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-gray-400 to-transparent flex items-end px-4 pb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <p className="text-white text-body-sm">
+                            APP Logo 設計
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 右圖 */}
+                    <div className="group border border-gray-300 relative w-full lg:basis-[40%] aspect-[510/363] overflow-hidden">
+                      <div className="w-full h-full overflow-hidden">
+                        <Image
+                          src={logo02}
+                          alt="Logo 02"
+                          fill
+                          className="object-cover [inset:-1px]"
+                        />
+                        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-gray-400 to-transparent flex items-end px-4 pb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <p className="text-white text-body-sm">
+                            APP Logo 設計
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 分隔線 */}
+                  <div className="w-full h-2 bg-linear-to-r from-green-300 to-green-500"></div>
+
+                  {/* Row 2 */}
+                  <div className="flex flex-col lg:flex-row gap-4">
+                    {/* 左圖 */}
+                    <div className="group border border-gray-300 relative w-full lg:basis-[40%] aspect-[510/363] overflow-hidden">
+                      <Image
+                        src={badge3D}
+                        alt="3D badge"
+                        fill
+                        className="object-cover [inset:-1px]"
+                      />
+                      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-gray-400 to-transparent flex items-end px-4 pb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <p className="text-white text-body-sm">
+                          3D 徽章渲染與合成
+                        </p>
+                      </div>
+                    </div>
+                    {/* 右圖 */}
+                    <div className="group border border-gray-300 relative w-full lg:basis-[60%] aspect-[782/363] overflow-hidden">
+                      <Image
+                        src={frame3D}
+                        alt="3D frame"
+                        fill
+                        className="object-cover [inset:-1px]"
+                      />
+                      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-gray-400 to-transparent flex items-end px-4 pb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <p className="text-white text-body-sm">
+                          3D NFT 相框製作
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 分隔線 */}
+                  <div className="w-full h-2 bg-linear-to-r from-purple-700 to-purple-500"></div>
+
+                  {/* Row 3 */}
+                  <div className="flex flex-col lg:flex-row gap-4">
+                    {/* 左圖 */}
+                    <div className="group border border-gray-300 relative w-full lg:basis-[60%] aspect-[782/363] overflow-hidden">
+                      <div className="w-full h-full overflow-hidden">
+                        <Image
+                          src={socialMix}
+                          alt="Logo 01"
+                          fill
+                          className="object-cover [inset:-1px]"
+                        />
+                        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-gray-400 to-transparent flex items-end px-4 pb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <p className="text-white text-body-sm">
+                            APP 社群圖設計
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 右圖 */}
+                    <div className="group border border-gray-300 relative w-full lg:basis-[40%] aspect-[510/363] overflow-hidden">
+                      <div className="w-full h-full overflow-hidden">
+                        <Image
+                          src={logo03}
+                          alt="Logo 02"
+                          fill
+                          className="object-cover [inset:-1px]"
+                        />
+                        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-gray-400 to-transparent flex items-end px-4 pb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <p className="text-white text-body-sm">
+                            APP Logo 設計
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 結尾區塊 */}
+            <section
+              id="thanks"
+              className="min-h-screen flex flex-col items-center justify-center"
+            >
+              {/* 內層：置中 + 控制最大寬度 */}
+              <div className="mx-auto w-full flex flex-col items-center justify-between gap-6">
+                <p className="font-display text-h2">Thanks :)</p>
+                <span>© 2025 Ting Wei Lee</span>
+              </div>
+            </section>
+          </div>
         </div>
-      </div>
+      </main>
     </>
   );
 }

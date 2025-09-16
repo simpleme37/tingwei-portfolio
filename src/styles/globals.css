@@ -40,6 +40,7 @@
   --color-green-300: #86d9c9;
   --color-green-500: #36c0a5;
   --color-purple-500: #dec7fe;
+  --color-purple-700: #c59cff;
   --color-white: #ffffff;
   --color-gray-200: #f6f6f6;
   --color-gray-300: #d3d3d3;
@@ -48,44 +49,44 @@
 }
 
 @layer utilities {
-  .text-hero {
+  .text-h1 {
     font-size: var(--text-48);
     font-weight: 700;
     line-height: var(--leading-1.2);
   }
   @media screen and (min-width: 1024px) {
-    .text-hero {
+    .text-h1 {
       font-size: var(--text-80);
     }
   }
 
-  .text-h1 {
+  .text-h2 {
     font-size: var(--text-32);
     font-weight: 700;
   }
   @media screen and (min-width: 1024px) {
-    .text-h1 {
+    .text-h2 {
       font-size: var(--text-56);
     }
   }
 
   @media screen and (min-width: 1024px) {
-    .text-h2 {
+    .text-h3 {
       font-size: var(--text-40);
     }
   }
 
-  .text-h3 {
+  .text-h4 {
     font-size: var(--text-20);
     font-weight: var(--weight-medium);
   }
   @media screen and (min-width: 1024px) {
-    .text-h3 {
+    .text-h4 {
       font-size: var(--text-28);
     }
   }
 
-  .text-h4 {
+  .text-h5 {
     font-size: var(--text-24);
     font-weight: var(--weight-medium);
   }
@@ -111,8 +112,13 @@
   }
 
   .text-body-sm {
-    font-size: var(--text-14);
+    font-size: var(--text-12);
     font-weight: var(--weight-regular);
+  }
+  @media screen and (min-width: 1024px) {
+    .text-sm {
+      font-size: var(--text-14);
+    }
   }
 
   .text-tiny {

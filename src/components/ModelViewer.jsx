@@ -190,7 +190,7 @@ function CameraDolly({
   return null;
 }
 
-export default function ModelViewer({ active , once = false }) {
+export default function ModelViewer({ active = true, once = false }) {
   const controlsRef = useRef(null);
   const [played, setPlayed] = useState(false);
   const shouldPlay = active && (!once || !played);
