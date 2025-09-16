@@ -26,8 +26,8 @@
 
   /* 行高 */
   --leading-1: 1;
-  --leading-1.2: 1.2;
-  --leading-1.6: 1.6;
+  --leading-1_2: 1.2;
+  --leading-1_6: 1.6;
 
   /* 字距 */
   --tracking-hero: 0.02em;
@@ -52,13 +52,13 @@
   .text-h1 {
     font-size: var(--text-48);
     font-weight: 700;
-    line-height: var(--leading-1.2);
+    line-height: var(--leading-1_2);
   }
   @media screen and (min-width: 1024px) {
     .text-h1 {
       font-size: var(--text-80);
       font-weight: 700;
-      line-height: var(--leading-1.2);
+      line-height: var(--leading-1_2);
     }
   }
 
@@ -96,6 +96,7 @@
   .text-body-lg {
     font-size: var(--text-16);
     font-weight: var(--weight-regular);
+    line-height: var(--leading-1_6);
   }
   @media screen and (min-width: 1024px) {
     .text-body-lg {
@@ -106,6 +107,7 @@
   .text-body {
     font-size: var(--text-14);
     font-weight: var(--weight-regular);
+    line-height: var(--leading-1_6);
   }
   @media screen and (min-width: 1024px) {
     .text-body {
@@ -136,6 +138,10 @@
     font-family: var(--font-sans);
     font-size: var(--text-body);
     line-height: var(--leading-paragraph);
+  }
+
+  p,
+  li {
     font-weight: 400;
   }
 }

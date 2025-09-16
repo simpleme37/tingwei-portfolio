@@ -65,11 +65,11 @@ export default function Home() {
               <div className="mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-20">
                 {/* 文字欄：手機在下、桌機在左 */}
                 <div className="order-2 lg:order-1 flex flex-col w-full lg:flex-1 lg:h-[520px] justify-between">
-                  <h1 className="font-display text-h1 text-gray-900">
+                  <h1 className="font-display text-h1 font-bold text-gray-900">
                     Wei’s <br />
                     Portfolio
                   </h1>
-                  <p className="font-display text-h1 text-gray-900 flex items-center justify-between">
+                  <p className="font-display text-h1 font-bold text-gray-900 flex items-center justify-between">
                     <span>2025</span>
                     <Flower className="w-12 h-12 text-green-500 hover:text-purple-500 transition-colors" />
                   </p>
