@@ -3,6 +3,9 @@ import Head from "next/head";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import clsx from "clsx";
+
+import useInViewOnce from "@/hooks/useInViewOnce";
 
 import Loading from "@/components/Loading";
 import NavBar from "@/components/NavBar";
@@ -17,7 +20,7 @@ import Github from "@/assets/icons/Github";
 import Smile from "@/assets/icons/Smile";
 import Video from "@/assets/icons/Video";
 import Flower from "@/assets/icons/Flower";
-import heroMain from "@/assets/images/decos/hero-main.png";
+import heroMain from "@/assets/images/decos/hero-main.svg";
 import skillsMain from "@/assets/images/decos/skills-main.svg";
 import flowersGreen from "@/assets/images/decos/flowers-green.svg";
 import flowersPurple from "@/assets/images/decos/flowers-purple.svg";
@@ -29,9 +32,20 @@ import logo03 from "@/assets/images/works/logo-03.png";
 import socialMix from "@/assets/images/works/social-mix.png";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
+const fadeBase =
+  "opacity-0 translate-y-2 motion-safe:transition-all motion-safe:duration-500";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
+
+  const [refTop, inTop] = useInViewOnce();
+  const [refAbout, inAbout] = useInViewOnce();
+  const [refSkills, inSkills] = useInViewOnce();
+  const [refFrontendLab, inFrontendLab] = useInViewOnce();
+  const [refAnimation, inAnimation] = useInViewOnce();
+  const [refModel3d, inModel3d] = useInViewOnce();
+  const [refVisuals, inVisuals] = useInViewOnce();
+  const [refThanks, inThanks] = useInViewOnce();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -59,7 +73,13 @@ export default function Home() {
             {/* Top */}
             <section
               id="top"
-              className="min-h-screen flex flex-col items-center justify-center scroll-mt-24"
+              ref={refTop}
+              data-inview={inTop}
+              className={clsx(
+                "min-h-screen flex flex-col items-center justify-center scroll-mt-24",
+                fadeBase,
+                inTop && !loading && "opacity-100 translate-y-0"
+              )}
             >
               {/* 內層：置中 + 控制最大寬度 */}
               <div className="mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-20">
@@ -80,9 +100,10 @@ export default function Home() {
                   <Image
                     src={heroMain}
                     alt="Hero main"
+                    priority
                     width={520}
                     height={520}
-                    className="h-full w-full object-cover"
+                    className="w-full h-auto object-cover"
                   />
                 </div>
               </div>
@@ -99,7 +120,13 @@ export default function Home() {
             {/* About */}
             <section
               id="about"
-              className="min-h-screen flex items-center scroll-mt-24"
+              ref={refAbout}
+              data-inview={inAbout}
+              className={clsx(
+                "min-h-screen flex items-center scroll-mt-24",
+                fadeBase,
+                inAbout && "opacity-100 translate-y-0"
+              )}
             >
               <div className="mx-auto w-full">
                 <h2 className="w-full font-display text-h2">About</h2>
@@ -126,40 +153,26 @@ export default function Home() {
                     <div className="flex flex-col md:flex-row gap-2">
                       <Link
                         href="https://resume-xi-tan.vercel.app"
-                        passHref
-                        legacyBehavior
-                        className="flex w-100"
+                        className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2 hover:bg-green-500 hover:text-white active:bg-green-500 active:text-white"
                       >
-                        <a className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2">
-                          <Smile />
-                          Resume
-                        </a>
+                        <Smile />
+                        Resume
                       </Link>
 
                       <Link
                         href="https://github.com/simpleme37"
-                        passHref
-                        legacyBehavior
+                        className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2 hover:bg-green-500 hover:text-white active:bg-green-500 active:text-white"
                       >
-                        <a
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2"
-                        >
-                          <Github />
-                          GitHub
-                        </a>
+                        <Github />
+                        GitHub
                       </Link>
 
                       <Link
                         href="https://drive.google.com/file/d/1p7aNVVioSAmS3NrakX9Y2WHFCCZHdtYg/view?usp=drive_link"
-                        passHref
-                        legacyBehavior
+                        className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2 hover:bg-green-500 hover:text-white active:bg-green-500 active:text-white"
                       >
-                        <a className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2">
-                          <Video />
-                          Motion Portfolio
-                        </a>
+                        <Video />
+                        Motion Portfolio
                       </Link>
                     </div>
                   </div>
@@ -170,14 +183,26 @@ export default function Home() {
             {/* Skills */}
             <section
               id="tools_and_skills"
-              className="min-h-screen flex items-center"
+              ref={refSkills}
+              data-inview={inSkills}
+              className={clsx(
+                "min-h-screen flex items-center scroll-mt-24",
+                fadeBase,
+                inSkills && "opacity-100 translate-y-0"
+              )}
             >
               <div className="mx-auto w-full flex flex-col gap-8">
                 <h2 className="w-full font-display text-h2 text-center">
                   Tools & Skills
                 </h2>
                 <div className="flex flex-col w-fit gap-8 items-center mx-auto text-h4 font-display">
-                  <Image src={skillsMain} alt="" width={820} height={96} />
+                  <Image
+                    src={skillsMain}
+                    alt="Main Skills"
+                    width={820}
+                    height={96}
+                    className="w-auto h-auto"
+                  />
                 </div>
               </div>
             </section>
@@ -185,7 +210,13 @@ export default function Home() {
             {/* Frontend Lab */}
             <section
               id="frontend_lab"
-              className="min-h-screen py-[60px] md:py-[120px] flex items-center scroll-mt-24"
+              ref={refFrontendLab}
+              data-inview={inFrontendLab}
+              className={clsx(
+                "min-h-screen py-[60px] md:py-[120px] flex items-center scroll-mt-24",
+                fadeBase,
+                inFrontendLab && "opacity-100 translate-y-0"
+              )}
             >
               <div className="mx-auto w-full flex flex-col gap-8">
                 <h2 className="w-full font-display text-h2">Frontend Lab</h2>
@@ -199,7 +230,13 @@ export default function Home() {
             {/* Animation */}
             <section
               id="animation"
-              className="min-h-screen py-[60px] md:py-[120px] flex items-center scroll-mt-24"
+              ref={refAnimation}
+              data-inview={inAnimation}
+              className={clsx(
+                "min-h-screen py-[60px] md:py-[120px] flex items-center scroll-mt-24",
+                fadeBase,
+                inAnimation && "opacity-100 translate-y-0"
+              )}
             >
               <div className="mx-auto w-full flex flex-col gap-8">
                 <h2 className="w-full font-display text-h2">Animation</h2>
@@ -266,7 +303,13 @@ export default function Home() {
             {/* 3D Model */}
             <section
               id="model3d"
-              className="min-h-screen py-[60px] md:py-[120px] flex flex-col items-center scroll-mt-24"
+              ref={refModel3d}
+              data-inview={inModel3d}
+              className={clsx(
+                "min-h-screen py-[60px] md:py-[120px] flex flex-col items-center scroll-mt-24",
+                fadeBase,
+                inModel3d && "opacity-100 translate-y-0"
+              )}
             >
               <div className="mx-auto w-full flex flex-col gap-8">
                 <h2 className="w-full font-display text-h2">3D Model</h2>
@@ -297,7 +340,13 @@ export default function Home() {
             {/* Visual Works */}
             <section
               id="visuals"
-              className="min-h-screen py-[60px] md:py-[120px] flex items-center scroll-mt-24"
+              ref={refVisuals}
+              data-inview={inVisuals}
+              className={clsx(
+                "min-h-screen py-[60px] md:py-[120px] flex items-center scroll-mt-24",
+                fadeBase,
+                inVisuals && "opacity-100 translate-y-0"
+              )}
             >
               <div className="mx-auto w-full flex flex-col gap-8">
                 <h2 className="w-full font-display text-h2">Visual Works</h2>
@@ -429,7 +478,13 @@ export default function Home() {
             {/* 結尾區塊 */}
             <section
               id="thanks"
-              className="min-h-screen flex flex-col items-center justify-center"
+              ref={refThanks}
+              data-inview={inThanks}
+              className={clsx(
+                "min-h-screen flex flex-col items-center justify-center",
+                fadeBase,
+                inThanks && "opacity-100 translate-y-0"
+              )}
             >
               {/* 內層：置中 + 控制最大寬度 */}
               <div className="mx-auto w-full flex flex-col items-center justify-between gap-6">

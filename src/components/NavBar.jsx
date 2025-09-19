@@ -32,8 +32,24 @@ export default function NavBar({
   const activeId = useScrollSpy(items.map((i) => i.id));
   const hidden = useScrollDirection({ startAt, threshold });
   const [open, setOpen] = useState(false); // 手機版選單開關
+  const menuBtnRef = useRef(); // 手機版 menu 鈕的 ref
 
   useLockBodyScroll(open);
+
+  const closeMenu = () => {
+    setOpen(false);
+    menuBtnRef.current?.focus(); // 關閉後把焦點還給漢堡鈕
+  };
+
+  // Esc 關閉
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") closeMenu();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, closeMenu]);
 
   return (
     <>
@@ -98,6 +114,7 @@ export default function NavBar({
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="mobile-menu"
+            ref={menuBtnRef}
           >
             <Menu />
           </button>
@@ -110,12 +127,10 @@ export default function NavBar({
           id="mobile-menu"
           role="dialog"
           aria-modal="true"
-          className="fixed flex flex-col justify-between inset-0 z-50 bg-green-500 md:hidden h-screen overflow-y-auto text-white"
+          className="fixed flex flex-col justify-between inset-0 z-50 bg-green-500 md:hidden overflow-y-auto text-white"
         >
           {/* 上：導覽列 */}
-          <div
-            className={clsx("flex flex-row px-5 py-2 border-b justify-between")}
-          >
+          <div className="flex flex-row px-5 py-2 justify-between">
             <NavLogo className="text-white" />
             <button
               onClick={() => {
@@ -146,10 +161,11 @@ export default function NavBar({
                     <a
                       key={id}
                       href={`#${id}`}
+                      onClick={closeMenu}
                       role="tab"
                       aria-selected={isActive}
                       aria-current={isActive ? "page" : undefined}
-                      className="flex gap-4 items-center justify-center font-normal whitespace-nowrap text-body-lg text-white"
+                      className="flex gap-4 items-center justify-center font-normal whitespace-nowrap text-body-lg text-white active:opacity-80 active:scale-95"
                     >
                       {isActive && (
                         <Flower className="w-3.5 h-3.5 text-white" />
@@ -169,36 +185,29 @@ export default function NavBar({
           <div className="mb-8 flex flex-wrap justify-center gap-2">
             <Link
               href="https://resume-xi-tan.vercel.app"
-              passHref
-              legacyBehavior
-              className="flex"
+              target="_blank"
+              className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2"
             >
-              <a className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2">
-                <Smile />
-                Resume
-              </a>
+              <Smile />
+              Resume
             </Link>
 
-            <Link href="https://github.com/simpleme37" passHref legacyBehavior>
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2"
-              >
-                <Github />
-                GitHub
-              </a>
+            <Link
+              href="https://github.com/simpleme37"
+              target="_blank"
+              className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2"
+            >
+              <Github />
+              GitHub
             </Link>
 
             <Link
               href="https://drive.google.com/file/d/1p7aNVVioSAmS3NrakX9Y2WHFCCZHdtYg/view?usp=drive_link"
-              passHref
-              legacyBehavior
+              target="_blank"
+              className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2"
             >
-              <a className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2">
-                <Video />
-                Motion Portfolio
-              </a>
+              <Video />
+              Motion Portfolio
             </Link>
           </div>
         </div>

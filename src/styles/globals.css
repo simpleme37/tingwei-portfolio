@@ -132,6 +132,10 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background: var(--color-gray-200);
     color: var(--color-gray-900);

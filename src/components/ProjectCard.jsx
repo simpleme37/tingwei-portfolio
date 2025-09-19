@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import Link from "next/link";
-import WebsiteEmbed from "./WebsiteEmbed";
+import WebsiteEmbed from "@/components/WebsiteEmbed";
 import Mouse from "@/assets/icons/Mouse";
 
 export default function ProjectCard({
@@ -27,6 +27,7 @@ export default function ProjectCard({
       <div className="w-full md:w-5/9">
         <Link
           href={href}
+          target="_blank"
           className="flex flex-row gap-1 items-end text-h4 font-semibold underline hover:text-green-500"
         >
           {title}
