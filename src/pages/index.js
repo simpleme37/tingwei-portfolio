@@ -168,7 +168,7 @@ export default function Home() {
                       </Link>
 
                       <Link
-                        href="https://drive.google.com/file/d/1p7aNVVioSAmS3NrakX9Y2WHFCCZHdtYg/view?usp=drive_link"
+                        href="https://youtu.be/segiOjIYQ2U"
                         className="flex items-center gap-2 cursor-pointer bg-white text-gray-500 border border-gray-300 rounded-full px-4 py-2 hover:bg-green-500 hover:text-white active:bg-green-500 active:text-white"
                       >
                         <Video />
